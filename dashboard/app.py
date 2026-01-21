@@ -6,7 +6,7 @@ from models.ev import EVCalculator
 
 
 st.title("CS2 - BO3 Monte Carlo Simulator")
-st.markdown('<a href="https://hltv.org" target="_blank">open website</a>', unsafe_allow_html=True)
+st.markdown('<a href="https://hltv.org" target="_blank">HLTV <--- get stats for input values</a>', unsafe_allow_html=True)
 
 
 #--------------------------------------------------------------------------------------------------------------------
