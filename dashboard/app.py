@@ -130,7 +130,7 @@ with odds:
 with winrate:
     ev_winrate = st.number_input("Winrate %:", 0.01, 100.00, 50.00, key="ev_winrate")
 with bets:
-    ev_bets = st.number_input("Number of bets to simulate:", 1, 100000, 1000, key="ev_bets")
+    ev_bets = st.number_input("Number of bets to simulate:", 1, 99999999, 1000, key="ev_bets")
 
 
 ev = EVCalculator(
@@ -153,6 +153,32 @@ st.button("Use simulation + bookmaker values", on_click=copy_sim_values)
 if st.session_state.get("trigger_rerun", False):
     st.session_state.trigger_rerun = False
     st.rerun()
+
+# visualisering
+ev_curve = ev.ev_convergence()
+n = len(ev_curve)
+
+df_ev = pd.DataFrame({
+    "Bet": range(1, n + 1),
+    "EV": ev_curve
+})
+fig_ev = go.Figure()
+fig_ev.add_trace(go.Scatter(
+    x=df_ev["Bet"],
+    y=df_ev["EV"],
+    mode="lines",
+    line=dict(color="#2ECC71", width=2),  # grønn farge
+    name="EV"
+))
+fig_ev.update_layout(
+    title="EV Development",
+    xaxis_title="Amount of Bets",
+    yaxis_title="Bank / Assets $",
+    template="plotly_white",
+    height=400,
+    margin=dict(l=40, r=40, t=60, b=40)
+)
+st.plotly_chart(fig_ev, use_container_width=True)
 
 
 
