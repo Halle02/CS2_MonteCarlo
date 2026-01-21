@@ -14,6 +14,8 @@ class BO3Simulator:
         loss1_2 = 0
         loss0_2 = 0
 
+        cumulative_winrate = []
+
         for i in range(self.simulations):
             m1 = np.random.random() < self.p1
             m2 = np.random.random() < self.p2
@@ -32,11 +34,15 @@ class BO3Simulator:
             else:
                 loss1_2 += 1
 
+            cumulative_winrate.append(bo3_wins / (i + 1))
+
+
         return {
                 "bo3_winrate": round(bo3_wins * 100 / self.simulations, 2),
                 "win_2_0": round(win2_0 * 100 / self.simulations, 2),
                 "win_2_1": round(win2_1 * 100/ self.simulations, 2),
                 "loss_1_2": round(loss1_2 * 100 / self.simulations, 2),
-                "loss_0_2": round(loss0_2 * 100 / self.simulations, 2)
+                "loss_0_2": round(loss0_2 * 100 / self.simulations, 2),
+                "convergence": cumulative_winrate
             }
 

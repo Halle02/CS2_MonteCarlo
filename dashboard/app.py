@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
 from models.bo3 import BO3Simulator
 from models.odds import Odds
 from models.maplogic import calculate_map_probabilities
@@ -57,7 +59,7 @@ p1, p2, p3 = calculate_map_probabilities(
 #p1 = st.slider("Map 1 winrate", 0.0, 1.0, 0.55)
 #p2 = st.slider("Map 2 winrate", 0.0, 1.0, 0.60)
 #p3 = st.slider("Decider winrate", 0.0, 1.0, 0.50)
-sims = st.number_input("Simulations", 1000, 100000, 10000)
+sims = st.number_input("Simulations", 1, 100000, 10000)
 
 sim = BO3Simulator(p1, p2, p3, sims)
 result = sim.run()
@@ -65,6 +67,33 @@ result = sim.run()
 odds1 = st.number_input("Bookmakers Odds - Team1 (your team): ", 1.02, 20.00, 2.00)
 odds2 = st.number_input("Bookmakers Odds - Team2 (their team): ", 1.02, 20.00, 2.00)
 o = Odds(odds1, odds2)
+
+
+#visualisering
+convergence = result["convergence"]
+n = len(convergence)
+
+df = pd.DataFrame({
+    "Simulation": range(1, n + 1),
+    "Winrate": convergence
+})
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=df["Simulation"],
+    y=df["Winrate"],
+    mode="lines",
+    line=dict(color="#4A90E2", width=2),
+    name="Winrate"
+))
+fig.update_layout(
+    title="Monte Carlo Visualization",
+    xaxis_title="Simulation number",
+    yaxis_title="Winrate",
+    template="plotly_white",
+    height=400,
+    margin=dict(l=40, r=40, t=60, b=40)
+)
+st.plotly_chart(fig, use_container_width=True)
 
 
 

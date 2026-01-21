@@ -2,3 +2,4 @@ numpy
 cs2api
 streamlit
 pandas
+plotly
