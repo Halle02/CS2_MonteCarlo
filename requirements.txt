@@ -1,3 +1,4 @@
-pip install numpy
-pip install cs2api
-pip install streamlit
+numpy
+cs2api
+streamlit
+pandas
